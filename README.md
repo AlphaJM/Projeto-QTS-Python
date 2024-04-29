@@ -9,4 +9,4 @@ O projeto proposto pelo professor Rodrigo Ataides da UNIALFA, refere-se a criaç
 
 ## O que deve ser usado?
 - A linguagem principal deve ser o PYTHON, além de suas bibliotecas PyInstaller (Para gerar um arquivo executavel) e alguma biblioteca para deixar o programa visual (Exemplo: Tkinter)
-- Banco de dados gratuito para salvar as informações.
+- Banco de dados Postgres

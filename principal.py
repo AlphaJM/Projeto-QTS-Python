@@ -1,5 +1,5 @@
 # Aqui vai ser o arquivo principal do projeto
-import psycopg2
+"""import psycopg2
 
 # Conecta ao banco de dados
 conn = psycopg2.connect(
@@ -7,9 +7,7 @@ conn = psycopg2.connect(
     user="postgres",
     password="postgres",
     database="Sistema_QTS"
-)
-
-
+)"""
 
 def cadastrar_curso(nome_curso,tema_curso):
     nome_curso == nome_curso
@@ -41,39 +39,3 @@ if escolha == 1:
     idade = input("Digite a idade do professor: ")
     sexo = input("Digite 0 para Masculino e 1 para feminino\n")
     cadastrar_professor(nome, idade, sexo)
-
-
-
-
-"""
-# Exemplo de conexão para banco de dados
-# É preciso baixar essa biblioteca de conexão com postgress: pip install psycopg2
-
-import psycopg2
-
-# Conecta ao banco de dados
-conn = psycopg2.connect(
-    host="localhost",
-    user="seu_usuario",
-    password="sua_senha",
-    database="seu_banco_de_dados"
-)
-
-# Cria um cursor para executar consultas
-cursor = conn.cursor()
-
-# Executa uma consulta SELECT
-cursor.execute("SELECT * FROM sua_tabela")
-
-# Recupera os resultados da consulta
-resultados = cursor.fetchall()
-
-# Imprime os resultados
-for linha in resultados:
-    print(linha)
-
-# Fecha o cursor e a conexão
-cursor.close()
-conn.close()
-
-"""
