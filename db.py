@@ -48,18 +48,13 @@ def select_tabela(nome_tabela):
 def insert_tabela(nome_tabela, value1, value2):
     cursor = connection.cursor()
     
-    cursor.execute(f'INSERT INTO {nome_tabela} (NOME_PROFESSORES, FORMACAO)\nVALUES ({value1}, {value2});')
+    cursor.execute(f"INSERT INTO {nome_tabela} (NOME_PROFESSORES, FORMACAO) VALUES ('{value1}', '{value2}')")
 
-    # Recupera os resultados da consulta
-    rows = cursor.fetchall()
-
-    # Itera sobre os resultados e os imprime
-    for row in rows:
-        print(row)
-
-    # Fecha o cursor e a conexão
+    # Commit da transação
+    connection.commit()
+    # Fecha o cursor
     cursor.close()
-    connection.close()
+
     
     
     
