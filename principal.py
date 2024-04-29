@@ -1,4 +1,16 @@
 # Aqui vai ser o arquivo principal do projeto
+import psycopg2
+
+# Conecta ao banco de dados
+conn = psycopg2.connect(
+    host="localhost",
+    user="postgres",
+    password="postgres",
+    database="Sistema_QTS"
+)
+
+
+
 def cadastrar_curso(nome_curso,tema_curso):
     nome_curso == nome_curso
     tema_curso == tema_curso
