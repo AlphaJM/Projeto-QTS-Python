@@ -1,0 +1,7 @@
+Bibliotecas:
+- Pesquisar algumas para deixar visual;
+- Pesquisar como usar o PyInstaller;
+
+Banco de Dados:
+- Escolher o melhor para ser usado, entre postgress e Mysql.
+
