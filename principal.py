@@ -9,6 +9,27 @@ conn = psycopg2.connect(
     database="Sistema_QTS"
 )"""
 
+#Exemplo de matriz 4x6 pois são 6 dias (segunda à sábado) e são 4 horários de aula por dia
+
+
+
+semana_matriz = [[0, 0, 0, 0, 0, 0]
+                 [0, 0, 0, 0, 0, 0]
+                 [0, 0, 0, 0, 0, 0]
+                 [0, 0, 0, 0, 0, 0]]
+
+def buscar_horario_disponivel():
+    horario_livre = True
+    
+    for linha in semana_matriz:
+        for elemento in linha:
+            if elemento == 0:
+                return horario_livre == True
+            else:
+                return horario_livre == False    
+        
+
+ 
 def cadastrar_curso(nome_curso,tema_curso):
     nome_curso == nome_curso
     tema_curso == tema_curso
