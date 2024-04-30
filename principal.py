@@ -24,7 +24,7 @@ semana_matriz = [
     [0, 0, 0, 0, 0, 0]
 ]
 
-def buscar_horario_disponivel():
+def tem_horario_disponivel():
     contador_horario_livre = 0
     
     for linha in semana_matriz:
@@ -35,7 +35,7 @@ def buscar_horario_disponivel():
     return contador_horario_livre > 0
 
 # Example usage
-#print(buscar_horario_disponivel())  # This will print True if there's at least one available time slot, otherwise False
+#print(tem_horario_disponivel())  # This will print True if there's at least one available time slot, otherwise False
   
 """def teste():
     print("Testando")"""
@@ -44,6 +44,5 @@ escolha = int(input("Bem vindo ao sistema de horário, digite o número para a e
 
 if escolha == 1:
     nome = input("Digite o nome do Professor: ")
-    idade = input("Digite a idade do professor: ")
-    sexo = input("Digite 0 para Masculino e 1 para feminino\n")
-    dbfunctions.cadastrar_professor(nome, idade, sexo)
+    formacao = input("Digite a formação do professor: ")
+    dbfunctions.cadastrar_professor(nome, formacao)
