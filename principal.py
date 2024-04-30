@@ -32,6 +32,9 @@ def cadastrar_professor(nome_professor, idade_professor, sexo):
     print(idade_professor)
     print(sexo)
 
+def teste():
+    print("Testando")
+
 escolha = int(input("Bem vindo ao sistema de horário, digite o número para a escolha do que fazer: \n1- Cadastrar Professor\n2- Cadastrar Materia\n3- Cadastrar Curso"))
 
 if escolha == 1:
