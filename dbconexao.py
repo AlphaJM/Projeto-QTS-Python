@@ -62,3 +62,4 @@ def insert_tabela(nome_tabela, value1, value2):
 show_tabela()
 insert_tabela("PROFESSORES", "João", "Sistemas-de-Informação")
 #select_tabela("PROFESSORES")
+connection.close()
