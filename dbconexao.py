@@ -11,7 +11,7 @@ conectar_banco = psycopg2.connect(
 print("Conexão bem-sucedida!")
 
 # Função para inserir dados
-def inserir_dados(nome_tabela, **valores):
+def insert_db(nome_tabela, **valores):
     connection = conectar_banco()
     cursor = connection.cursor()
 
@@ -28,7 +28,7 @@ def inserir_dados(nome_tabela, **valores):
     connection.close()
 
 # Função para selecionar dados
-def selecionar_dados(nome_tabela, *colunas):
+def select_db(nome_tabela, *colunas):
     connection = conectar_banco()
     cursor = connection.cursor()
 
@@ -50,7 +50,7 @@ def selecionar_dados(nome_tabela, *colunas):
     return rows
 
 # Função para atualizar dados
-def atualizar_dados(nome_tabela, identificador, **valores):
+def update_db(nome_tabela, identificador, **valores):
     connection = conectar_banco()
     cursor = connection.cursor()
 
@@ -66,7 +66,7 @@ def atualizar_dados(nome_tabela, identificador, **valores):
     connection.close()
 
 # Função para excluir dados
-def excluir_dados(nome_tabela, identificador):
+def delete_db(nome_tabela, identificador):
     connection = conectar_banco()
     cursor = connection.cursor()
 
