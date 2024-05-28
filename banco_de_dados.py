@@ -3,26 +3,36 @@
 
 import psycopg2
 from psycopg2 import sql
+from psycopg2 import OperationalError
 
-"""conectar_banco = psycopg2.connect(
-        dbname="Sistema_QTS",
-        user="postgres",
-        password="postgres",
-        host="localhost"
-    )"""
-    
-    # Se a conexão for bem-sucedida, imprime uma mensagem
-print("Conexão bem-sucedida!")
 
-def criar_tabelas_iniciais():
-    informacao_conexao_db = {
+informacao_conexao_db = {
+        #Para chamar as conexões do banco de dados, passar como parametro na função
         'dbname': 'Sistema_QTS',
         'user': 'postgres',
         'password': 'postgres',
         'host': 'localhost',
     }
 
-    conectar_banco = psycopg2.connect(**informacao_conexao_db)
+def conectar_banco_de_dados(informacao_db):
+    try:
+        # Tentando conectar ao banco de dados
+        conectar_banco = psycopg2.connect(**informacao_db)
+        print("Banco de dados conectado com sucesso!")
+        # Retornando a conexão para ser usada posteriormente se necessário
+        return conectar_banco
+    except (Exception, psycopg2.DatabaseError) as erro:
+        # Tratando o erro de conexão e exibindo a mensagem de erro
+        print(f"Erro ao conectar ao banco de dados: {erro}")
+        # Opcionalmente, pode-se retornar None ou False para indicar falha na conexão
+        return None
+
+
+
+def criar_tabelas_iniciais(informacao_db):
+    
+    conectar_banco = psycopg2.connect(**informacao_db)
+    print("Banco de dados conectado!")
     cursor = conectar_banco.cursor()
 
     comandos_criacao_tabelas_essenciais = [
@@ -133,3 +143,11 @@ def criar_tabelas_iniciais():
 
         # Encerrar a conexão com o banco de dados
         conectar_banco.close()
+
+
+
+"""print("Testando conexão com banco de dados")
+conectar_banco_de_dados(informacao_conexao_db)"""
+
+"""print("Teste de criação de tabelas")
+criar_tabelas_iniciais(informacao_conexao_db)""" #Essa porra funciona caralho
