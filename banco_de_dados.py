@@ -5,7 +5,6 @@ import psycopg2
 from psycopg2 import sql
 from psycopg2 import OperationalError
 
-
 informacao_conexao_db = {
         #Para chamar as conexões do banco de dados, passar como parametro na função
         'dbname': 'Sistema_QTS',
@@ -13,6 +12,65 @@ informacao_conexao_db = {
         'password': 'postgres',
         'host': 'localhost',
     }
+
+tabelas = [
+        'titularidades',
+        'professores',
+        'area_curso',
+        'materias',
+        'cursos',
+        'semestres',
+        'associacao_professor_materia',
+        'associacao_materia_curso',
+        'nome_cronograma_aula',
+        'periodos',
+        'horarios_aula',
+        'cronograma_aula'
+    ]
+
+def main(informacao_db):
+    
+    try:
+        conectar_banco = psycopg2.connect(**informacao_db)
+        # Verifique a existência das tabelas
+        resultados = verificar_existencia_tabelas(conectar_banco, tabelas)
+        # Verifique se todas as tabelas existem
+        todas_existem = all(existe for _, existe in resultados)
+
+        if todas_existem:
+            print("Todas as tabelas existem.")
+            # Código para executar se todas as tabelas existem
+            # ...
+        else:
+            print("Algumas tabelas não existem:")
+            for tabela, existe in resultados:
+                if not existe:
+                    print(f" - {tabela}")
+            # Código para executar se alguma tabela não existir
+            # ...
+
+    except Exception as e:
+        print(f"Erro ao conectar ao banco de dados: {e}")
+    finally:
+        if conectar_banco:
+            conectar_banco.close()
+
+
+
+
+def verificar_existencia_tabelas(informacao_db, tabelas):
+    conectar_banco = psycopg2.connect(**informacao_db)
+    resultados = []
+    with conectar_banco.cursor() as cur:
+        for tabela in tabelas:
+            query = sql.SQL("SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = %s)")
+            cur.execute(query, (tabela,))
+            existe = cur.fetchone()[0]
+            resultados.append((tabela, existe))
+    print(resultados)
+    return resultados
+
+
 
 def conectar_banco_de_dados(informacao_db):
     try:
@@ -147,7 +205,12 @@ def criar_tabelas_iniciais(informacao_db):
 
 
 """print("Testando conexão com banco de dados")
-conectar_banco_de_dados(informacao_conexao_db)"""
+conectar_banco_de_dados(informacao_conexao_db)""" # funciona
 
 """print("Teste de criação de tabelas")
 criar_tabelas_iniciais(informacao_conexao_db)""" #Essa porra funciona caralho
+
+"""verificar_existencia_tabelas(informacao_conexao_db, tabelas)""" # funciona
+
+if __name__ == "__main__":
+    main(informacao_conexao_db)
