@@ -1,4 +1,5 @@
 import banco_de_dados
+import cadastro
 import psycopg2
 import gerar_horario
 
@@ -48,8 +49,31 @@ def main():
             elif opcao == '13':
                 gerar_horario.main()
             elif opcao in {'1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'}:
-                # Aqui você pode chamar a função correspondente ao número da opção selecionada
-                pass
+                if opcao == '1':
+                    titularidade = input('Digite o nome da titularidade: ')
+                    cadastro.cadastar_titularidade(titularidade)
+                elif opcao == '2':
+                    cadastro.cadastrar_professor()
+                elif opcao == '3':
+                    cadastro.cadastrar_area_curso()
+                elif opcao == '4':
+                    cadastro.cadastrar_materia()
+                elif opcao == '5':
+                    cadastro.cadastrar_curso()
+                elif opcao == '6':
+                    cadastro.cadastrar_semestre()
+                elif opcao == '7':
+                    cadastro.associar_professor_materia()
+                elif opcao == '8':
+                    cadastro.associar_materia_curso()
+                elif opcao == '9':
+                    cadastro.cadastrar_nome_cronograma()
+                elif opcao == '10':
+                    cadastro.cadastrar_periodo()
+                elif opcao == '11':
+                    cadastro.cadastrar_horario_aula()
+                else:
+                    cadastro.cadastrar_cronograma_aula()
             else:
                 print("Opção inválida. Por favor, escolha uma opção válida.")
 
