@@ -8,7 +8,7 @@ informacao_conexao_db = {
     'host': 'localhost',
 }
 
-tabelas = [
+TABELAS = [
     'titularidades',
     'professores',
     'area_curso',
@@ -23,36 +23,38 @@ tabelas = [
     'cronograma_aula'
 ]
 
-def verificar_existencia_tabelas(informacao_db, tabelas):
-    conectar_banco = psycopg2.connect(**informacao_db)
-    resultados = []
+def executar_query(conexao, query, values=None):
     try:
-        with conectar_banco.cursor() as cur:
-            for tabela in tabelas:
-                query = sql.SQL("SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = %s)")
-                cur.execute(query, (tabela,))
-                existe = cur.fetchone()[0]
-                resultados.append((tabela, existe))
+        with conexao.cursor() as cursor:
+            if values:
+                cursor.execute(query, values)
+            else:
+                cursor.execute(query)
+            if cursor.description:
+                return cursor.fetchone()[0]
     except Exception as e:
-        print(f"Erro ao verificar tabelas: {e}")
-    finally:
-        conectar_banco.close()
+        conexao.rollback()
+        print(f"Erro ao executar query: {e}")
+    return None
+
+def verificar_existencia_tabelas(conexao, tabelas):
+    resultados = []
+    for tabela in tabelas:
+        query = sql.SQL("SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = %s)")
+        existe = executar_query(conexao, query, (tabela,))
+        resultados.append((tabela, existe))
     return resultados
 
 def conectar_banco_de_dados(informacao_db):
     try:
-        conectar_banco = psycopg2.connect(**informacao_db)
+        conexao = psycopg2.connect(**informacao_db)
         print("Banco de dados conectado com sucesso!")
-        return conectar_banco
+        return conexao
     except (Exception, psycopg2.DatabaseError) as erro:
         print(f"Erro ao conectar ao banco de dados: {erro}")
         return None
 
-def criar_tabelas_iniciais(informacao_db):
-    conectar_banco = psycopg2.connect(**informacao_db)
-    print("Banco de dados conectado!")
-    cursor = conectar_banco.cursor()
-
+def criar_tabelas_iniciais(conexao):
     comandos_criacao_tabelas_essenciais = [
         """CREATE TABLE Titularidades (
         ID_Titularidade SERIAL PRIMARY KEY,
@@ -129,15 +131,15 @@ def criar_tabelas_iniciais(informacao_db):
             FOREIGN KEY (ID_Nome_Cronograma_Aula) REFERENCES Nome_Cronograma_Aula(ID_Nome_Cronograma_Aula),
             FOREIGN KEY (ID_Associacao_Materia_Curso) REFERENCES Associacao_Materia_Curso(ID_Associacao_Materia_Curso)
         )"""]
-
     try:
+        cursor = conexao.cursor()
         for comando in comandos_criacao_tabelas_essenciais:
             cursor.execute(comando)
-        conectar_banco.commit()
+        conexao.commit()
         print("Tabelas criadas com sucesso.")
     except (Exception, psycopg2.DatabaseError) as erro:
         print(f"Erro ao criar tabelas: {erro}")
-        conectar_banco.rollback()
+        conexao.rollback()
     finally:
         cursor.close()
-        conectar_banco.close()
+        conexao.close()

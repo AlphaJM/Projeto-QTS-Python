@@ -1,31 +1,26 @@
 import psycopg2
-from psycopg2 import sql
-import random
 from banco_de_dados import conectar_banco_de_dados, informacao_conexao_db
+import random
 
 def buscar_aulas(conexao):
     with conexao.cursor() as cursor:
         cursor.execute("SELECT ID_Materia, Nome_Materia FROM Materias")
         return cursor.fetchall()
 
-# Configuração do horário escolar
-dias_semana = ['Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira']
-numero_horarios_por_dia = 4
+Dias_Semana = ['Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira']
+Numero_Horarios_por_Dia = 4
 
-# Função para verificar se o horário é válido
 def horario_valido(horario):
-    # Verificar se todas as aulas são únicas em cada dia
     for dia in horario:
         if len(set(dia)) != len(dia):
             return False
     return True
 
-# Função de backtracking para gerar o horário
 def gerar_horario(horario, dia_atual, aulas_disponiveis):
-    if dia_atual == len(dias_semana):
+    if dia_atual == len(Dias_Semana):
         return horario_valido(horario)
     
-    for combinacao in random.sample(aulas_disponiveis, numero_horarios_por_dia):
+    for combinacao in random.sample(aulas_disponiveis, Numero_Horarios_por_Dia):
         horario[dia_atual] = combinacao
         novas_aulas_disponiveis = [aula for aula in aulas_disponiveis if aula not in combinacao]
         
@@ -35,23 +30,17 @@ def gerar_horario(horario, dia_atual, aulas_disponiveis):
     return False
 
 def main():
-    # Conectar ao banco de dados
     conexao = conectar_banco_de_dados(informacao_conexao_db)
     if not conexao:
         return
     
-    # Buscar aulas do banco de dados
     aulas = buscar_aulas(conexao)
     aulas_ids = [aula[0] for aula in aulas]
+    horario_escolar = [[] for _ in Dias_Semana]
 
-    # Inicializando o horário
-    horario_escolar = [[] for _ in dias_semana]
-
-    # Gerar o horário usando backtracking
     if gerar_horario(horario_escolar, 0, aulas_ids):
-        # Exibindo o horário escolar
         for dia, aulas_ids in enumerate(horario_escolar):
-            print(f"\n{dias_semana[dia]}:")
+            print(f"\n{Dias_Semana[dia]}:")
             for aula_id in aulas_ids:
                 for aula in aulas:
                     if aula[0] == aula_id:
@@ -59,7 +48,6 @@ def main():
     else:
         print("Não foi possível gerar um horário sem conflitos.")
 
-    # Fechar a conexão com o banco de dados
     conexao.close()
 
 if __name__ == "__main__":
