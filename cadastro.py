@@ -142,6 +142,7 @@ def cadastrar_nome_cronograma(descricao):
         conexao.close()
 
 def cadastrar_periodo(nome_periodo):
+    # Periodo se é noturno, verspertino ou matutino
     conexao = conectar_banco_de_dados(informacao_conexao_db)
     try:
         with conexao.cursor() as cursor:
