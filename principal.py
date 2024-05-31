@@ -4,7 +4,7 @@ import psycopg2
 import gerar_horario
 
 def exibir_menu_admin():
-    print("------ Menu Admin ------")
+    print("------ Admin - Menu de Cadastro ------")
     print("1. Cadastrar Titularidade")
     print("2. Cadastrar Professor")
     print("3. Cadastrar Área de Curso")
@@ -22,7 +22,7 @@ def exibir_menu_admin():
 def exibir_menu():
     print("------ Menu ------")
     print("1. Gerar Horário Escolar")
-    print("2. Entrar no Menu de Administrador")
+    print("2. Administrador")
     print("0. Sair")
 
 def main():
@@ -67,23 +67,11 @@ def main():
                         cadastro.cadastrar_titularidade(titularidade)
                     
                     elif opcao == '2':
-                        mapa_titularidades = {
-                            '1': 7,
-                            '2': 8,
-                            '3': 9,
-                            '4': 10,
-                            '5': 12,
-                            '6': 11
-                        }
                         nome = input('Digite o nome do Professor(a): ')
                         especializacao = input('Digite a especialização do Professor(a): ')
                         codigo_lattes = int(input('Digite o Código Lattes do Professor(a): '))
-                        prof_titularidade = input('Digite o número referente ao nível de titularidade do Professor(a):\n1- Graduado;\n2- Especialista;\n3- Mestre;\n4- Doutor;\n5- Pós-Doutor;\n6- Livre-Docênte\nEscolha: ')
-                        
-                        if prof_titularidade in mapa_titularidades:
-                            cadastro.cadastrar_professor(nome, especializacao, codigo_lattes, mapa_titularidades[prof_titularidade])
-                        else:
-                            print('Escolha Inválida!')
+                        id_titularidade = int(input('Digite o ID da Titularidade do Professor(a): '))
+                        cadastro.cadastrar_professor(nome, especializacao, codigo_lattes, id_titularidade)
 
                     elif opcao == '3':
                         nome_area_curso = str(input('Digite a área do curso: '))
@@ -93,12 +81,8 @@ def main():
                         nome_materia = str(input('Digite o nome da matéria: '))
                         descricao_materia = str(input('Fale sobre a matéria: '))
                         carga_horaria = int(input('Digite a carga horária da matéria: '))
-                        area_curso = int(input('Escolha a area do curso:\n1- tecnologia\nEscolha: '))
-                        if area_curso == 1:
-                            area_curso == 1
-                            cadastro.cadastrar_materia(nome_materia, descricao_materia, carga_horaria, area_curso)
-                        else:
-                            print('Escolha invalida!')
+                        id_area_curso = int(input('Digite o ID da Area do Curso relacionado a matéria: '))
+                        cadastro.cadastrar_materia(nome_materia, descricao_materia, carga_horaria, id_area_curso)
                         
 
                     elif opcao == '5':
@@ -137,19 +121,11 @@ def main():
                         cadastro.cadastrar_periodo(periodo)
 
                     else:
-                        mapa_periodo_horario = {
-                            '1': 1,
-                            '2': 2,
-                            '3': 3
-                        }
                         nome_horario = str(input('Digite o nome do horário: '))
                         hora_inicio = input('Digite a hora de inicio do horário (Formato necessário HH:MM:SS): ')
                         hora_fim = input('Digite a hora que finaliza o horário (HH:MM:SS): ')
-                        periodo_horario = int(input('Escolha o periodo que o horario será criado:\n1- Matutino\n2- Vespertino\n3- Noturno\nEscolha: '))
-                        if periodo_horario in mapa_periodo_horario:
-                            cadastro.cadastrar_horario_aula(nome_horario, hora_inicio, hora_fim, mapa_periodo_horario[periodo_horario])
-                        else:
-                            print('Opção Invalida!')
+                        id_periodo = int(input('Digite o ID do Periodo relacionado ao Horário da aula: '))
+                        cadastro.cadastrar_horario_aula(nome_horario, hora_inicio, hora_fim, id_periodo)
 
                 else:
                     print("Opção inválida. Por favor, escolha uma opção válida.")
