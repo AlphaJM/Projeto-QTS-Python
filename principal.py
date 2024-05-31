@@ -13,9 +13,10 @@ def exibir_menu_admin():
     print("6. Cadastrar Semestre")
     print("7. Associar Professor a Matéria")
     print("8. Associar Matéria a Curso")
-    print("9. Cadastrar Cronograma de Aula")
-    print("10. Cadastrar Período")
-    print("11. Cadastrar Horário de Aula")
+    print("9. Cadastrar o nome de Cronograma de Aula")
+    print("10. Cadastrar o Cronograma de Aula")
+    print("11. Cadastrar Período")
+    print("12. Cadastrar Horário de Aula")
     print("0. Sair")
 
 def exibir_menu():
@@ -58,7 +59,7 @@ def main():
                 exibir_menu_admin()
                 opcao = input("Escolha uma opção: ")
 
-                if opcao in {'1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'}:
+                if opcao in {'1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'}:
                     
                     if opcao == '1':
                         titularidade = input('Digite o nome da titularidade: ')
@@ -117,15 +118,15 @@ def main():
                         cadastro.cadastrar_nome_cronograma(cronograma)
 
                     elif opcao == '10':
+                        cadastro.cadastrar_cronograma_aula()
+
+                    elif opcao == '11':
                         periodo = str(input('Digite o periodo que deseja cadastrar: '))
                         cadastro.cadastrar_periodo(periodo)
 
-                    elif opcao == '11':
-                        cadastro.cadastrar_horario_aula()
-
                     else:
-                        cadastro.cadastrar_cronograma_aula()
-
+                        cadastro.cadastrar_horario_aula()
+                        
                 else:
                     print("Opção inválida. Por favor, escolha uma opção válida.")
 
