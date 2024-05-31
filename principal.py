@@ -97,7 +97,16 @@ def main():
                         cadastro.cadastrar_area_curso(nome_area_curso)
 
                     elif opcao == '4':
-                        cadastro.cadastrar_materia()
+                        nome_materia = str(input('Digite o nome da matéria: '))
+                        descricao_materia = str(input('Fale sobre a matéria: '))
+                        carga_horaria = int(input('Digite a carga horária da matéria: '))
+                        area_curso = int(input('Escolha a area do curso:\n1- tecnologia\nEscolha: '))
+                        if area_curso == 1:
+                            area_curso == 1
+                            cadastro.cadastrar_materia(nome_materia, descricao_materia, carga_horaria, area_curso)
+                        else:
+                            print('Escolha invalida!')
+                        
 
                     elif opcao == '5':
                         nome_curso = input('Digite o nome do curso: ')
