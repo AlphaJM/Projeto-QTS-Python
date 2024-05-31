@@ -67,28 +67,21 @@ def main():
                         cadastro.cadastrar_titularidade(titularidade)
                     
                     elif opcao == '2':
-                        nome = str(input('Digite o nome do Professor(a): '))
-                        especializacao = str(input('Digite a especialização do Professor(a): '))
+                        mapa_titularidades = {
+                            '1': 7,
+                            '2': 8,
+                            '3': 9,
+                            '4': 10,
+                            '5': 12,
+                            '6': 11
+                        }
+                        nome = input('Digite o nome do Professor(a): ')
+                        especializacao = input('Digite a especialização do Professor(a): ')
                         codigo_lattes = int(input('Digite o Código Lattes do Professor(a): '))
-                        prof_titularidade = int(input('Digite o número referente ao nível de titularidade do Professor(a):\n1- Graduado;\n2- Especialista;\n3- Mestre;\n4- Doutor;\n5- Pós-Doutor;\n6- Livre-Docênte'))
-                        if prof_titularidade == 1:
-                            prof_titularidade == 7
-                            cadastro.cadastrar_professor(nome, especializacao, codigo_lattes, prof_titularidade)
-                        elif prof_titularidade == 2:
-                            prof_titularidade == 8
-                            cadastro.cadastrar_professor(nome, especializacao, codigo_lattes, prof_titularidade)
-                        elif prof_titularidade == 3:
-                            prof_titularidade == 9
-                            cadastro.cadastrar_professor(nome, especializacao, codigo_lattes, prof_titularidade)
-                        elif prof_titularidade == 4:
-                            prof_titularidade == 10
-                            cadastro.cadastrar_professor(nome, especializacao, codigo_lattes, prof_titularidade)
-                        elif prof_titularidade == 5:
-                            prof_titularidade == 12
-                            cadastro.cadastrar_professor(nome, especializacao, codigo_lattes, prof_titularidade)
-                        elif prof_titularidade == 6:
-                            prof_titularidade == 11
-                            cadastro.cadastrar_professor(nome, especializacao, codigo_lattes, prof_titularidade)
+                        prof_titularidade = input('Digite o número referente ao nível de titularidade do Professor(a):\n1- Graduado;\n2- Especialista;\n3- Mestre;\n4- Doutor;\n5- Pós-Doutor;\n6- Livre-Docênte\nEscolha: ')
+                        
+                        if prof_titularidade in mapa_titularidades:
+                            cadastro.cadastrar_professor(nome, especializacao, codigo_lattes, mapa_titularidades[prof_titularidade])
                         else:
                             print('Escolha Inválida!')
 
@@ -118,36 +111,43 @@ def main():
                         cadastro.cadastrar_semestre(semestre)
 
                     elif opcao == '7':
-                        cadastro.associar_professor_materia()
+                        id_professor = input('Digite o ID do professor: ')
+                        id_materia = input('Digite o ID da matéria: ')
+                        cadastro.associar_professor_materia(id_professor, id_materia)
 
                     elif opcao == '8':
-                        cadastro.associar_materia_curso()
+                        id_materia = input('Digite o ID da matéria: ')
+                        id_curso = input('Digite o ID do curso: ')
+                        id_semestre = input('Digite o ID do semestre: ')
+                        cadastro.associar_materia_curso(id_materia, id_curso, id_semestre)
 
                     elif opcao == '9':
                         cronograma = str(input('Digite o nome do cronograma que deseja cadastrar: '))
                         cadastro.cadastrar_nome_cronograma(cronograma)
 
                     elif opcao == '10':
-                        cadastro.cadastrar_cronograma_aula()
+                        nome_cronograma = input('Digite o nome do cronograma de aula: ')
+                        id_horario_aula = input('Digite o ID do horário de aula: ')
+                        id_nome_cronograma = input('Digite o ID do nome do cronograma: ')
+                        id_associacao_materia_curso = input('Digite o ID da associação matéria-curso: ')
+                        cadastro.cadastrar_cronograma_aula(nome_cronograma, id_horario_aula, id_nome_cronograma, id_associacao_materia_curso)
 
                     elif opcao == '11':
                         periodo = str(input('Digite o periodo que deseja cadastrar: '))
                         cadastro.cadastrar_periodo(periodo)
 
                     else:
+                        mapa_periodo_horario = {
+                            '1': 1,
+                            '2': 2,
+                            '3': 3
+                        }
                         nome_horario = str(input('Digite o nome do horário: '))
                         hora_inicio = input('Digite a hora de inicio do horário (Formato necessário HH:MM:SS): ')
                         hora_fim = input('Digite a hora que finaliza o horário (HH:MM:SS): ')
                         periodo_horario = int(input('Escolha o periodo que o horario será criado:\n1- Matutino\n2- Vespertino\n3- Noturno\nEscolha: '))
-                        if periodo_horario == 1:
-                            periodo_horario == 1
-                            cadastro.cadastrar_horario_aula(nome_horario,hora_inicio,hora_fim,periodo_horario)
-                        elif periodo_horario == 2:
-                            periodo_horario == 2
-                            cadastro.cadastrar_horario_aula(nome_horario,hora_inicio,hora_fim,periodo_horario)
-                        elif periodo_horario == 3:
-                            periodo_horario == 3
-                            cadastro.cadastrar_horario_aula(nome_horario,hora_inicio,hora_fim,periodo_horario)
+                        if periodo_horario in mapa_periodo_horario:
+                            cadastro.cadastrar_horario_aula(nome_horario, hora_inicio, hora_fim, mapa_periodo_horario[periodo_horario])
                         else:
                             print('Opção Invalida!')
 
