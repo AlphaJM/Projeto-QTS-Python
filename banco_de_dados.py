@@ -36,7 +36,6 @@ def verificacao_para_conexao_db():
     'password': f'{password}',
     'host': f'{host}',
 }
-    conectar_banco_de_dados(informacao_conexao_db)
 
 def executar_query(conexao, query, values=None):
     try:

@@ -68,7 +68,7 @@ def cadastrar_curso(nome_curso, descricao_curso):
     conexao = conectar_banco_de_dados(informacao_conexao_db)
     try:
         with conexao.cursor() as cursor:
-            cursor.execute("INSERT INTO Cursos (Nome_Curso, Descricao_Curso) VALUES (%s) RETURNING ID_Curso", (nome_curso, descricao_curso))
+            cursor.execute("INSERT INTO Cursos (Nome_Curso, Descricao_Curso) VALUES (%s, %s) RETURNING ID_Curso", (nome_curso, descricao_curso))
             id_curso = cursor.fetchone()[0]
             conexao.commit()
             print(f"Curso cadastrado com sucesso com ID: {id_curso}")

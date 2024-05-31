@@ -100,8 +100,8 @@ def main():
                         cadastro.cadastrar_materia()
 
                     elif opcao == '5':
-                        nome_curso = str(input('Digite o nome do curso: '))
-                        descricao_curso = str(input('Descreva sobre o curso: '))
+                        nome_curso = input('Digite o nome do curso: ')
+                        descricao_curso = input('Descreva sobre o curso: ')
                         cadastro.cadastrar_curso(nome_curso, descricao_curso)
                 
                     elif opcao == '6':
@@ -126,7 +126,21 @@ def main():
                         cadastro.cadastrar_periodo(periodo)
 
                     else:
-                        cadastro.cadastrar_horario_aula()
+                        nome_horario = str(input('Digite o nome do horário: '))
+                        hora_inicio = input('Digite a hora de inicio do horário (Formato necessário HH:MM:SS): ')
+                        hora_fim = input('Digite a hora que finaliza o horário (HH:MM:SS): ')
+                        periodo_horario = int(input('Escolha o periodo que o horario será criado:\n1- Matutino\n2- Vespertino\n3- Noturno\nEscolha: '))
+                        if periodo_horario == 1:
+                            periodo_horario == 1
+                            cadastro.cadastrar_horario_aula(nome_horario,hora_inicio,hora_fim,periodo_horario)
+                        elif periodo_horario == 2:
+                            periodo_horario == 2
+                            cadastro.cadastrar_horario_aula(nome_horario,hora_inicio,hora_fim,periodo_horario)
+                        elif periodo_horario == 3:
+                            periodo_horario == 3
+                            cadastro.cadastrar_horario_aula(nome_horario,hora_inicio,hora_fim,periodo_horario)
+                        else:
+                            print('Opção Invalida!')
 
                 else:
                     print("Opção inválida. Por favor, escolha uma opção válida.")
