@@ -28,6 +28,7 @@ def exibir_menu():
 def main():
     try:
         # Conectar ao banco de dados
+        #conexao_banco = banco_de_dados.verificacao_para_conexao_db()
         conexao_banco = banco_de_dados.conectar_banco_de_dados(banco_de_dados.informacao_conexao_db)
         
         if not conexao_banco:
@@ -126,7 +127,7 @@ def main():
 
                     else:
                         cadastro.cadastrar_horario_aula()
-                        
+
                 else:
                     print("Opção inválida. Por favor, escolha uma opção válida.")
 

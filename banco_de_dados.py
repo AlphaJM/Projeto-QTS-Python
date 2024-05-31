@@ -23,6 +23,21 @@ TABELAS = [
     'cronograma_aula'
 ]
 
+def verificacao_para_conexao_db():
+    print('Para realizar a conexão com o banco de dados PostGres digite as informações necessárias')
+    dbname = str(input('Digite o nome do Banco de dados: '))
+    user = str(input('Digite o nome de usuário: '))
+    password = str(input('Digite a senha: '))
+    host = str(input('Digite o Host: '))
+
+    informacao_conexao_db = {
+    'dbname': f'{dbname}',
+    'user': f'{user}',
+    'password': f'{password}',
+    'host': f'{host}',
+}
+    conectar_banco_de_dados(informacao_conexao_db)
+
 def executar_query(conexao, query, values=None):
     try:
         with conexao.cursor() as cursor:
