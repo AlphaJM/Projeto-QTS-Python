@@ -1,49 +1,105 @@
 import psycopg2
 from banco_de_dados import conectar_banco_de_dados, informacao_conexao_db
-import random
 
-Dias_Semana = ['Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira']
-Numero_Horarios_por_Dia = 4
+dias_da_semana = [
+    'Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'
+]
 
-def buscar_aulas(conexao):
-    with conexao.cursor() as cursor:
-        cursor.execute("SELECT ID_Materia, Nome_Materia FROM Materias")
-        return cursor.fetchall()
+horario_aulas = {dia: [1, 2, 3, 4] for dia in dias_da_semana}
 
-def horario_valido(horario):
-    for dia in horario:
-        if len(set(dia)) != len(dia):
-            return False
-    return True
 
-def gerar_horario(horario, dia_atual, aulas_disponiveis):
-    if dia_atual == len(Dias_Semana):
-        return horario_valido(horario)
+def gerar_horario():
+    conexao = conectar_banco_de_dados(informacao_conexao_db)
+    try:
+        with conexao.cursor() as cursor:
+            dias_da_semana = ["segunda", "terça", "quarta", "quinta", "sexta", "sábado"]
 
-    for combinacao in random.sample(aulas_disponiveis, Numero_Horarios_por_Dia):
-        horario[dia_atual] = combinacao
-        novas_aulas_disponiveis = [aula for aula in aulas_disponiveis if aula not in combinacao]
+            # Criando um dicionário onde cada dia da semana tem uma lista de 4 horários de aula inicializados com None
+            horarios_de_aula = {dia: [None, None, None, None] for dia in dias_da_semana}
 
-        if gerar_horario(horario, dia_atual + 1, novas_aulas_disponiveis):
-            return True
+            # Função para adicionar uma aula aos horários
+            def adicionar_aula(aula):
+                for dia in dias_da_semana:
+                    if aula['carga_horaria'] == 80:
+                        if all(slot is None for slot in horarios_de_aula[dia]):
+                            horarios_de_aula[dia] = [aula for _ in range(4)]
+                            return
+                    elif aula['carga_horaria'] == 40:
+                        empty_slots = [i for i, slot in enumerate(horarios_de_aula[dia]) if slot is None]
+                        if len(empty_slots) >= 2:
+                            horarios_de_aula[dia][empty_slots[0]] = aula
+                            horarios_de_aula[dia][empty_slots[1]] = aula
+                            return
 
-    return False
+            # Consultando o banco de dados para obter as aulas
+            cursor.execute("SELECT nome_materia, carga_horaria FROM materias")
+            aulas = cursor.fetchall()
 
-def gerar_horario_escolar(conexao):
-    aulas = buscar_aulas(conexao)
-    aulas_ids = [aula[0] for aula in aulas]
-    horario_escolar = [[] for _ in Dias_Semana]
+            # Convertendo os resultados da consulta em dicionários de aulas
+            aulas = [{'nome': nome_materia, 'carga_horaria': carga_horaria} for nome_materia, carga_horaria in aulas]
 
-    if gerar_horario(horario_escolar, 0, aulas_ids):
-        horario_final = []
-        for dia, aulas_ids in enumerate(horario_escolar):
-            dia_horario = {'dia': Dias_Semana[dia], 'aulas': []}
-            for aula_id in aulas_ids:
-                for aula in aulas:
-                    if aula[0] == aula_id:
-                        dia_horario['aulas'].append({'id': aula_id, 'nome': aula[1]})
-            horario_final.append(dia_horario)
-        return horario_final
-    else:
-        return None
+            # Loop para adicionar todas as aulas aos horários
+            while aulas:
+                aula = aulas.pop(0)
+                adicionar_aula(aula)
 
+            # Exibindo a estrutura
+            for dia, horarios in horarios_de_aula.items():
+                print(f"{dia.capitalize()}: {horarios}")
+    except Exception as e:
+        conexao.rollback()
+        print(f"Erro ao gerar horário {e}")
+    finally:
+        conexao.close()
+
+def consulta_materias():
+    conexao = conectar_banco_de_dados(informacao_conexao_db)
+    try:
+        with conexao.cursor() as cursor:
+            cursor.execute("SELECT nome_materia, carga_horaria FROM materias")
+            materias = cursor.fetchall()
+            conexao.commit()
+            print(f"As matérias existentes são: {materias}")
+            return materias
+    except Exception as e:
+        conexao.rollback()
+        print(f"Erro ao buscar materias {e}")
+    finally:
+        conexao.close()
+
+def consulta_professores():
+    conexao = conectar_banco_de_dados(informacao_conexao_db)
+    try:
+        with conexao.cursor() as cursor:
+            cursor.execute("SELECT nome FROM professores")
+            professores = cursor.fetchall()
+            conexao.commit()
+            print(f"Os professores cadastrados são: {professores}")
+            return professores
+    except Exception as e:
+        conexao.rollback()
+        print(f"Erro ao buscar professores {e}")
+    finally:
+        conexao.close()
+
+def consulta_cursos():
+    conexao = conectar_banco_de_dados(informacao_conexao_db)
+    try:
+        with conexao.cursor() as cursor:
+            cursor.execute("SELECT nome_curso FROM cursos")
+            cursos = cursor.fetchall()
+            conexao.commit()
+            print(f"Os cursos cadastrados são: {cursos}")
+            return cursos
+    except Exception as e:
+        conexao.rollback()
+        print(f"Erro ao buscar cursos {e}")
+    finally:
+        conexao.close()
+
+
+gerar_horario()
+
+"""consulta_materias()
+consulta_professores()
+consulta_cursos()"""
