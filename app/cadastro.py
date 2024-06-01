@@ -1,7 +1,7 @@
 import psycopg2
 from psycopg2 import sql
 from flask import Blueprint
-from app.models.banco_de_dados import conectar_banco_de_dados, informacao_conexao_db
+from banco_de_dados import conectar_banco_de_dados, informacao_conexao_db
 
 cadastro_bp = Blueprint('cadastro', __name__)
 

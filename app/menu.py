@@ -1,11 +1,5 @@
-import app.models.banco_de_dados as banco_de_dados
-from app.routes import gerar_horario, cadastro
-from app import create_app
+import gerar_horario, cadastro, banco_de_dados
 
-app = create_app()
-
-if __name__ == '__main__':
-    app.run(debug=True)
 
 def exibir_menu_admin():
     print("------ Admin - Menu de Cadastro ------")

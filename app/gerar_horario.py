@@ -1,5 +1,5 @@
 import psycopg2
-from app.models.banco_de_dados import conectar_banco_de_dados, informacao_conexao_db
+from banco_de_dados import conectar_banco_de_dados, informacao_conexao_db
 import random
 from flask import Blueprint, render_template
 
