@@ -1,9 +1,6 @@
 import psycopg2
 from banco_de_dados import conectar_banco_de_dados, informacao_conexao_db
 import random
-from flask import Blueprint, render_template
-
-gerar_horario_bp = Blueprint('gerar_horario', __name__)
 
 Dias_Semana = ['Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira']
 Numero_Horarios_por_Dia = 4
@@ -50,16 +47,3 @@ def gerar_horario_escolar(conexao):
     else:
         return None
 
-@gerar_horario_bp.route('/gerar_horario')
-def gerar_horario_route():
-    conexao = conectar_banco_de_dados(informacao_conexao_db)
-    if not conexao:
-        return "Erro ao conectar ao banco de dados."
-
-    horario_escolar = gerar_horario_escolar(conexao)
-    conexao.close()
-
-    if horario_escolar:
-        return render_template('horario.html', horario=horario_escolar)
-    else:
-        return "Não foi possível gerar um horário sem conflitos."

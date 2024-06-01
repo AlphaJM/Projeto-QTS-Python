@@ -1,7 +1,6 @@
 import psycopg2
 from psycopg2 import sql
 
-# Configuração padrão para a conexão com o banco de dados
 informacao_conexao_db = {
     'dbname': 'Sistema_QTS',
     'user': 'postgres',
