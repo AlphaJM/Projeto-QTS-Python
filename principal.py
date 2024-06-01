@@ -1,7 +1,11 @@
-import banco_de_dados
-import cadastro
-import psycopg2
-import gerar_horario
+import app.models.banco_de_dados as banco_de_dados
+from app.routes import gerar_horario, cadastro
+from app import create_app
+
+app = create_app()
+
+if __name__ == '__main__':
+    app.run(debug=True)
 
 def exibir_menu_admin():
     print("------ Admin - Menu de Cadastro ------")
@@ -28,7 +32,6 @@ def exibir_menu():
 def main():
     try:
         # Conectar ao banco de dados
-        #conexao_banco = banco_de_dados.verificacao_para_conexao_db()
         conexao_banco = banco_de_dados.conectar_banco_de_dados(banco_de_dados.informacao_conexao_db)
         
         if not conexao_banco:
@@ -58,74 +61,74 @@ def main():
 
             elif opcao == '2':
                 exibir_menu_admin()
-                opcao = input("Escolha uma opção: ")
+                opcao_admin = input("Escolha uma opção: ")
 
-                if opcao in {'1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'}:
-                    
-                    if opcao == '1':
-                        titularidade = input('Digite o nome da titularidade: ')
-                        cadastro.cadastrar_titularidade(titularidade)
-                    
-                    elif opcao == '2':
-                        nome = input('Digite o nome do Professor(a): ')
-                        especializacao = input('Digite a especialização do Professor(a): ')
-                        codigo_lattes = int(input('Digite o Código Lattes do Professor(a): '))
-                        id_titularidade = int(input('Digite o ID da Titularidade do Professor(a): '))
-                        cadastro.cadastrar_professor(nome, especializacao, codigo_lattes, id_titularidade)
+                if opcao_admin == '0':
+                    continue
 
-                    elif opcao == '3':
-                        nome_area_curso = str(input('Digite a área do curso: '))
-                        cadastro.cadastrar_area_curso(nome_area_curso)
-
-                    elif opcao == '4':
-                        nome_materia = str(input('Digite o nome da matéria: '))
-                        descricao_materia = str(input('Fale sobre a matéria: '))
-                        carga_horaria = int(input('Digite a carga horária da matéria: '))
-                        id_area_curso = int(input('Digite o ID da Area do Curso relacionado a matéria: '))
-                        cadastro.cadastrar_materia(nome_materia, descricao_materia, carga_horaria, id_area_curso)
-                        
-
-                    elif opcao == '5':
-                        nome_curso = input('Digite o nome do curso: ')
-                        descricao_curso = input('Descreva sobre o curso: ')
-                        cadastro.cadastrar_curso(nome_curso, descricao_curso)
+                elif opcao_admin == '1':
+                    titularidade = input('Digite o nome da titularidade: ')
+                    cadastro.cadastrar_titularidade(titularidade)
                 
-                    elif opcao == '6':
-                        semestre = str(input('Digite qual semestre deseja cadastrar: '))
-                        cadastro.cadastrar_semestre(semestre)
+                elif opcao_admin == '2':
+                    nome = input('Digite o nome do Professor(a): ')
+                    especializacao = input('Digite a especialização do Professor(a): ')
+                    codigo_lattes = int(input('Digite o Código Lattes do Professor(a): '))
+                    id_titularidade = int(input('Digite o ID da Titularidade do Professor(a): '))
+                    cadastro.cadastrar_professor(nome, especializacao, codigo_lattes, id_titularidade)
 
-                    elif opcao == '7':
-                        id_professor = input('Digite o ID do professor: ')
-                        id_materia = input('Digite o ID da matéria: ')
-                        cadastro.associar_professor_materia(id_professor, id_materia)
+                elif opcao_admin == '3':
+                    nome_area_curso = input('Digite a área do curso: ')
+                    cadastro.cadastrar_area_curso(nome_area_curso)
 
-                    elif opcao == '8':
-                        id_materia = input('Digite o ID da matéria: ')
-                        id_curso = input('Digite o ID do curso: ')
-                        id_semestre = input('Digite o ID do semestre: ')
-                        cadastro.associar_materia_curso(id_materia, id_curso, id_semestre)
+                elif opcao_admin == '4':
+                    nome_materia = input('Digite o nome da matéria: ')
+                    descricao_materia = input('Fale sobre a matéria: ')
+                    carga_horaria = int(input('Digite a carga horária da matéria: '))
+                    id_area_curso = int(input('Digite o ID da Area do Curso relacionado a matéria: '))
+                    cadastro.cadastrar_materia(nome_materia, descricao_materia, carga_horaria, id_area_curso)
+                
+                elif opcao_admin == '5':
+                    nome_curso = input('Digite o nome do curso: ')
+                    descricao_curso = input('Descreva sobre o curso: ')
+                    cadastro.cadastrar_curso(nome_curso, descricao_curso)
+            
+                elif opcao_admin == '6':
+                    semestre = input('Digite qual semestre deseja cadastrar: ')
+                    cadastro.cadastrar_semestre(semestre)
 
-                    elif opcao == '9':
-                        cronograma = str(input('Digite o nome do cronograma que deseja cadastrar: '))
-                        cadastro.cadastrar_nome_cronograma(cronograma)
+                elif opcao_admin == '7':
+                    id_professor = input('Digite o ID do professor: ')
+                    id_materia = input('Digite o ID da matéria: ')
+                    cadastro.associar_professor_materia(id_professor, id_materia)
 
-                    elif opcao == '10':
-                        nome_cronograma = input('Digite o nome do cronograma de aula: ')
-                        id_horario_aula = input('Digite o ID do horário de aula: ')
-                        id_nome_cronograma = input('Digite o ID do nome do cronograma: ')
-                        id_associacao_materia_curso = input('Digite o ID da associação matéria-curso: ')
-                        cadastro.cadastrar_cronograma_aula(nome_cronograma, id_horario_aula, id_nome_cronograma, id_associacao_materia_curso)
+                elif opcao_admin == '8':
+                    id_materia = input('Digite o ID da matéria: ')
+                    id_curso = input('Digite o ID do curso: ')
+                    id_semestre = input('Digite o ID do semestre: ')
+                    cadastro.associar_materia_curso(id_materia, id_curso, id_semestre)
 
-                    elif opcao == '11':
-                        periodo = str(input('Digite o periodo que deseja cadastrar: '))
-                        cadastro.cadastrar_periodo(periodo)
+                elif opcao_admin == '9':
+                    cronograma = input('Digite o nome do cronograma que deseja cadastrar: ')
+                    cadastro.cadastrar_nome_cronograma(cronograma)
 
-                    else:
-                        nome_horario = str(input('Digite o nome do horário: '))
-                        hora_inicio = input('Digite a hora de inicio do horário (Formato necessário HH:MM:SS): ')
-                        hora_fim = input('Digite a hora que finaliza o horário (HH:MM:SS): ')
-                        id_periodo = int(input('Digite o ID do Periodo relacionado ao Horário da aula: '))
-                        cadastro.cadastrar_horario_aula(nome_horario, hora_inicio, hora_fim, id_periodo)
+                elif opcao_admin == '10':
+                    nome_cronograma = input('Digite o nome do cronograma de aula: ')
+                    id_horario_aula = input('Digite o ID do horário de aula: ')
+                    id_nome_cronograma = input('Digite o ID do nome do cronograma: ')
+                    id_associacao_materia_curso = input('Digite o ID da associação matéria-curso: ')
+                    cadastro.cadastrar_cronograma_aula(nome_cronograma, id_horario_aula, id_nome_cronograma, id_associacao_materia_curso)
+
+                elif opcao_admin == '11':
+                    periodo = input('Digite o periodo que deseja cadastrar: ')
+                    cadastro.cadastrar_periodo(periodo)
+
+                elif opcao_admin == '12':
+                    nome_horario = input('Digite o nome do horário: ')
+                    hora_inicio = input('Digite a hora de inicio do horário (Formato necessário HH:MM:SS): ')
+                    hora_fim = input('Digite a hora que finaliza o horário (HH:MM:SS): ')
+                    id_periodo = int(input('Digite o ID do Periodo relacionado ao Horário da aula: '))
+                    cadastro.cadastrar_horario_aula(nome_horario, hora_inicio, hora_fim, id_periodo)
 
                 else:
                     print("Opção inválida. Por favor, escolha uma opção válida.")
@@ -133,7 +136,7 @@ def main():
     except Exception as e:
         print(f"Erro ao conectar ao banco de dados ou ao verificar/criar tabelas: {e}")
     finally:
-        if conexao_banco:
+        if 'conexao_banco' in locals() and conexao_banco:
             conexao_banco.close()
 
 if __name__ == "__main__":

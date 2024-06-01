@@ -1,6 +1,7 @@
 import psycopg2
 from psycopg2 import sql
 
+# Configuração padrão para a conexão com o banco de dados
 informacao_conexao_db = {
     'dbname': 'Sistema_QTS',
     'user': 'postgres',
@@ -25,17 +26,17 @@ TABELAS = [
 
 def verificacao_para_conexao_db():
     print('Para realizar a conexão com o banco de dados PostGres digite as informações necessárias')
-    dbname = str(input('Digite o nome do Banco de dados: '))
-    user = str(input('Digite o nome de usuário: '))
-    password = str(input('Digite a senha: '))
-    host = str(input('Digite o Host: '))
+    dbname = input('Digite o nome do Banco de dados: ')
+    user = input('Digite o nome de usuário: ')
+    password = input('Digite a senha: ')
+    host = input('Digite o Host: ')
 
-    informacao_conexao_db = {
-    'dbname': f'{dbname}',
-    'user': f'{user}',
-    'password': f'{password}',
-    'host': f'{host}',
-}
+    return {
+        'dbname': dbname,
+        'user': user,
+        'password': password,
+        'host': host,
+    }
 
 def executar_query(conexao, query, values=None):
     try:
@@ -144,7 +145,8 @@ def criar_tabelas_iniciais(conexao):
             FOREIGN KEY (ID_Horario_Aula) REFERENCES Horarios_Aula(ID_Horario_Aula),
             FOREIGN KEY (ID_Nome_Cronograma_Aula) REFERENCES Nome_Cronograma_Aula(ID_Nome_Cronograma_Aula),
             FOREIGN KEY (ID_Associacao_Materia_Curso) REFERENCES Associacao_Materia_Curso(ID_Associacao_Materia_Curso)
-        )"""]
+        )"""
+    ]
     try:
         cursor = conexao.cursor()
         for comando in comandos_criacao_tabelas_essenciais:
