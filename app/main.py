@@ -313,6 +313,61 @@ def exibir_menu_admin():
     tk.Button(admin_window, text="Cadastrar Cronograma de Aula", command=chamar_funcao(chamar_cadastrar_cronograma_aula)).pack(fill='x')
     tk.Button(admin_window, text="Sair", command=admin_window.destroy).pack(fill='x')
 
+def chamar_gerar_horario():
+    def submit():
+        dias_da_semana = ["segunda", "terça", "quarta", "quinta", "sexta", "sábado"]
+        horarios_de_aula = {dia: [None, None, None, None] for dia in dias_da_semana}
+
+        def adicionar_aula(aula):
+            for dia in dias_da_semana:
+                if aula['carga_horaria'] == 80:
+                    if all(slot is None for slot in horarios_de_aula[dia]):
+                        horarios_de_aula[dia] = [aula for _ in range(4)]
+                        return
+                elif aula['carga_horaria'] == 40:
+                    empty_slots = [i for i, slot in enumerate(horarios_de_aula[dia]) if slot is None]
+                    if len(empty_slots) >= 2:
+                        horarios_de_aula[dia][empty_slots[0]] = aula
+                        horarios_de_aula[dia][empty_slots[1]] = aula
+                        return
+
+                aulas = [
+                    {'nome': entry_nome_materia.get(), 'carga_horaria': int(entry_carga_horaria.get())}
+                ]
+                
+                while aulas:
+                    aula = aulas.pop(0)
+                    adicionar_aula(aula)
+
+                horario_str = ""
+                for dia, horarios in horarios_de_aula.items():
+                    horario_str += f"{dia.capitalize()}: {horarios}\n"
+                
+                messagebox.showinfo("Horário Gerado", horario_str)
+                janela_gerar_horario.destroy()
+
+            janela_gerar_horario = tk.Toplevel(root)
+            janela_gerar_horario.title("Gerar Horário de Aula")
+            janela_gerar_horario.geometry("400x300")
+
+            tk.Label(janela_gerar_horario, text="Nome da Matéria:").pack(pady=5)
+            entry_nome_materia = tk.Entry(janela_gerar_horario)
+            entry_nome_materia.pack(pady=5)
+
+            tk.Label(janela_gerar_horario, text="Carga Horária (40 ou 80):").pack(pady=5)
+            entry_carga_horaria = tk.Entry(janela_gerar_horario)
+            entry_carga_horaria.pack(pady=5)
+
+            tk.Button(janela_gerar_horario, text="Gerar Horário", command=submit).pack(pady=10)
+
+        # Exemplo de uso do tkinter
+        root = tk.Tk()
+        root.title("Sistema de Gerenciamento de Horários")
+
+        tk.Button(root, text="Gerar Horário de Aula", command=gerar_horario_gui).pack(pady=20)
+
+        root.mainloop()
+
 def conectar_banco():
     try:
         conexao_banco = banco_de_dados.conectar_banco_de_dados(banco_de_dados.informacao_conexao_db)
